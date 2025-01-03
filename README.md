@@ -1,4 +1,6 @@
-# lab2_flutter
+# lab2_flutter and lab3_flutter
+
+this repo is updated with the full requirements from the laboratory exercise 3
 
 A new Flutter project.
 
