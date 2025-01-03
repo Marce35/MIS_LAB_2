@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../services/api_services.dart';
+import 'favourite_jokes_view.dart';
 import 'joke_list_view.dart';
 import 'random_joke_view.dart';
 
@@ -30,6 +31,19 @@ class JokeTypeView extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.star, color: Colors.yellow),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FavoriteJokesView(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<String>>(
         future: ApiService.fetchJokeTypes(),

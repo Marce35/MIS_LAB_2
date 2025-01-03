@@ -1,9 +1,38 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:lab2_flutter/firebase_options.dart';
 
 import 'screens/joke_type_view.dart';
+import 'package:provider/provider.dart';
+import 'services/favourites_provider.dart';
 
-void main() {
-  runApp(const JokesApp());
+void main() async {
+  await dotenv.load();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  final vapidKey = dotenv.env['VAPID_KEY'];
+  final token = await messaging.getToken(vapidKey: vapidKey);
+  //print(token);
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+      ],
+      child: const JokesApp(),
+    ),);
 }
 
 class JokesApp extends StatelessWidget {
